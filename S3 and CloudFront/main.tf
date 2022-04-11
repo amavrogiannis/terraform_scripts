@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.9"
+      version = "~> 4.9" # You may have to update this at times. 
     }
   }
 
@@ -10,8 +10,8 @@ terraform {
 }
 
 provider "aws" {
-  profile = "default"
-  region  = "eu-west-1"
+  profile = "default" #Specify your local AWS Profile that you specified here. 
+  region  = "eu-west-1" #Select the region that you want to deploy the resources. 
 }
 
 
@@ -42,6 +42,7 @@ resource "aws_s3_bucket" "mybucket" {
     #                EOF
   }
 
+# Specify your environment (tags)
   tags = {
     Environment = "development"
     Name        = "my-tag"
