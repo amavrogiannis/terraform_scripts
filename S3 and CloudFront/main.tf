@@ -16,7 +16,7 @@ provider "aws" {
 
 
 resource "aws_s3_bucket" "mybucket" {
-  bucket = "cv.alexmav.co.uk"
+  bucket = "test.alexmav.co.uk"
   acl    = "private"
   # Add specefic S3 policy in the s3-policy.json on the same directory
   #policy = file("s3-policy.json")
@@ -27,7 +27,7 @@ resource "aws_s3_bucket" "mybucket" {
 
   website {
     index_document = "index.html"
-    error_document = "error.html"
+    error_document = "404.html"
 	
 	# Add routing rules if required
     #routing_rules = <<EOF
@@ -44,88 +44,19 @@ resource "aws_s3_bucket" "mybucket" {
 
 # Specify your environment (tags)
   tags = {
-    Environment = "development"
-    Name        = "my-tag"
+    Environment = "WebApp"
+    Name        = "Test"
   }
 
 }
 
-#Upload files of your static website
-resource "aws_s3_bucket_object" "html" {
-  for_each = fileset("../../mywebsite/", "**/*.html")
-
-  bucket = aws_s3_bucket.mybucket.bucket
-  key    = each.value
-  source = "../../mywebsite/${each.value}"
-  etag   = filemd5("../../mywebsite/${each.value}")
-  content_type = "text/html"
-}
-
-resource "aws_s3_bucket_object" "svg" {
-  for_each = fileset("../../mywebsite/", "**/*.svg")
-
-  bucket = aws_s3_bucket.mybucket.bucket
-  key    = each.value
-  source = "../../mywebsite/${each.value}"
-  etag   = filemd5("../../mywebsite/${each.value}")
-  content_type = "image/svg+xml"
-}
-
-resource "aws_s3_bucket_object" "css" {
-  for_each = fileset("../../mywebsite/", "**/*.css")
-
-  bucket = aws_s3_bucket.mybucket.bucket
-  key    = each.value
-  source = "../../mywebsite/${each.value}"
-  etag   = filemd5("../../mywebsite/${each.value}")
-  content_type = "text/css"
-}
-
-resource "aws_s3_bucket_object" "js" {
-  for_each = fileset("../../mywebsite/", "**/*.js")
-
-  bucket = aws_s3_bucket.mybucket.bucket
-  key    = each.value
-  source = "../../mywebsite/${each.value}"
-  etag   = filemd5("../../mywebsite/${each.value}")
-  content_type = "application/javascript"
-}
-
-
-resource "aws_s3_bucket_object" "images" {
-  for_each = fileset("../../mywebsite/", "**/*.png")
-
-  bucket = aws_s3_bucket.mybucket.bucket
-  key    = each.value
-  source = "../../mywebsite/${each.value}"
-  etag   = filemd5("../../mywebsite/${each.value}")
-  content_type = "image/png"
-}
-
-resource "aws_s3_bucket_object" "json" {
-  for_each = fileset("../../mywebsite/", "**/*.json")
-
-  bucket = aws_s3_bucket.mybucket.bucket
-  key    = each.value
-  source = "../../mywebsite/${each.value}"
-  etag   = filemd5("../../mywebsite/${each.value}")
-  content_type = "application/json"
-}
-# Add more aws_s3_bucket_object for the type of files you want to upload
-# The reason for having multiple aws_s3_bucket_object with file type is to make sure
-# we add the correct content_type for the file in S3. Otherwise website load may have issues
-
-# Print the files processed so far
-output "fileset-results" {
-  value = fileset("../../mywebsite/", "**/*")
-}
 
 locals {
-  s3_origin_id = "s3-my-webapp.example.com"
+  s3_origin_id = "test.alexmav.co.uk"
 }
 
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "s3-my-webapp.example.com"
+  comment = "test.alexmav.co.uk"
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -140,7 +71,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "my-cloudfront"
+  comment             = "This is a test version"
   default_root_object = "index.html"
 
   # Configure logging here if required 	
@@ -151,7 +82,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   #}
 
   # If you have domain configured use it here 
-  #aliases = ["mywebsite.example.com", "s3-static-web-dev.example.com"]
+  aliases = ["test.alexmav.co.uk"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -227,8 +158,8 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
 
   tags = {
-    Environment = "development"
-    Name        = "my-tag"
+    Group = "webapp"
+    Name = "Test"
   }
 
   viewer_certificate {
