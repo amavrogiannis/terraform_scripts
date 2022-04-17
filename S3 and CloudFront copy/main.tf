@@ -2,7 +2,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.9" # You may have to update this at times. 
+      version = "~> 4.10" # You may have to update this at times. 
     }
   }
 
@@ -17,11 +17,23 @@ provider "aws" {
 
 
 resource "aws_s3_bucket" "b" {
-  bucket = "test.alexmav.co.uk"
+  bucket = "cv.alexmav.co.uk"
 
   tags = {
     Environment = "WebApp"
     Name = "Test"
+  }
+}
+
+resource "aws_s3_bucket_website_configuration" "b" {
+  bucket = "cv.alexmav.co.uk"
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "404.html"
   }
 }
 
@@ -30,12 +42,22 @@ resource "aws_s3_bucket_acl" "b_acl" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket_server_side_encryption_configuration" "b" {
+  bucket = aws_s3_bucket.b.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm     = "AES256"
+    }
+  }
+}
+
 locals {
-  s3_origin_id = "test.alexmav.co.uk"
+  s3_origin_id = "cv.alexmav.co.uk"
 }
 
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "test.alexmav.co.uk"
+  comment = "cv.alexmav.co.uk"
 }
 
 resource "aws_cloudfront_distribution" "s3_distribution" {
@@ -59,7 +81,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 #    prefix          = "logs/"
 #  }
 
-#  aliases = ["test.alexmav.co.uk"]
+  aliases = ["cv.alexmav.co.uk"]
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -170,8 +192,8 @@ resource "aws_s3_bucket_policy" "b" {
 resource "aws_s3_bucket_public_access_block" "b" {
   bucket = aws_s3_bucket.b.id
 
-  block_public_acls       = true
-  block_public_policy     = true
-  //ignore_public_acls      = true
-  //restrict_public_buckets = true
+  //block_public_acls       = true
+  //block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
