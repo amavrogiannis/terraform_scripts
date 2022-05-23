@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "cv_prod" {
   bucket = var.bucket_id
   tags = {
     Environment = var.bucket_env_tag
-    Group        = var.bucket_group_tag
+    Group       = var.bucket_group_tag
   }
 }
 
@@ -13,7 +13,7 @@ resource "aws_s3_bucket_website_configuration" "cv_prod" {
     suffix = "index.html"
   }
   error_document {
-    key    = 404
+    key = 404
   }
 
 }

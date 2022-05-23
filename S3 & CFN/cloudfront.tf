@@ -93,7 +93,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   }
   tags = {
     Environment = var.bucket_env_tag
-    Group        = var.bucket_group_tag
+    Group       = var.bucket_group_tag
   }
 
   #First, create certificate, before pasting the ARN here. 
