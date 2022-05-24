@@ -14,3 +14,9 @@ variable "vpc-private-subnet" {
   type        = string
   default     = "10.22.0.0/24"
 }
+
+variable "private-subnet-cidr-blocks" {
+  description = "List of private subnet CIDR blocks"
+  type        = list
+  default     = ["10.0.1.0/24", "10.0.3.0/24"]
+}
