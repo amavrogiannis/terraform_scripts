@@ -20,3 +20,9 @@ variable "private-subnet-cidr-blocks" {
   type        = list
   default     = ["10.0.1.0/24", "10.0.3.0/24"]
 }
+
+variable "vpc-public-cidr" {
+  description = "cidr block that is mapping to PublicRT"
+  type = string
+  default = "value"
+}

@@ -23,7 +23,7 @@ resource "aws_route_table" "PublicRT" {
   count = length(var.private-subnet-cidr-blocks)
   vpc_id = aws_vpc.dev-vpc.id
   route = {
-    cidr_block = "0.0.0.0/0"
+    cidr_block = var.vpc-public-cidr
     gateway_id = aws_internet_gateway.vpc-igw.id
   }
 }
