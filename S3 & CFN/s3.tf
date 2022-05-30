@@ -1,3 +1,7 @@
+locals {
+  instance_name = "${terraform.workspace}-bucket"
+}
+
 resource "aws_s3_bucket" "cv_prod" {
   bucket = var.bucket_id
   tags = {

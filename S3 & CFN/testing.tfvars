@@ -1,0 +1,5 @@
+bucket_id           = "test.alexmav.co.uk"
+bucket_env_tag      = "qa"
+bucket_group_tag    = "test"
+acm_certificate_arn = "arn:aws:acm:us-east-1:582037776064:certificate/1bb0bf47-9c2c-4030-9b17-5a6d3d317a93"
+aws_cfn_comment     = "Test environment"

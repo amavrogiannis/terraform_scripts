@@ -1,7 +1,6 @@
 variable "bucket_id" {
   description = "Give a name to the S3 Bucket"
   type        = string
-  default     = "cv.alexmav.co.uk"
 }
 
 variable "bucket_env_tag" {
@@ -25,7 +24,6 @@ variable "bucket_group_tag" {
 variable "acm_certificate_arn" {
   description = "Paste the ARN Certificate you created on AWS ACM"
   type        = string
-  default     = "arn:aws:acm:us-east-1:582037776064:certificate/44b3e5f4-b8d1-4a3d-b585-2f00733a53f4"
 }
 
 variable "aws_cfn_comment" {
