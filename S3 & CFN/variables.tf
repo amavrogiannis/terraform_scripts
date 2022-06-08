@@ -21,10 +21,10 @@ variable "bucket_group_tag" {
   }
 }
 
-variable "acm_certificate_arn" {
-  description = "Paste the ARN Certificate you created on AWS ACM"
-  type        = string
-}
+# variable "acm_certificate_arn" {
+#   description = "Paste the ARN Certificate you created on AWS ACM"
+#   type        = string
+# }
 
 variable "aws_cfn_comment" {
   description = "Enter your CloudFront comment here"
