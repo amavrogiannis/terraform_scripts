@@ -1,3 +1,8 @@
+variable "domain_name" {
+  description = "Enter the domain name you want to manage to your Terraform"
+  type        = string
+  default     = "alexmav.co.uk"
+}
 variable "bucket_id" {
   description = "Give a name to the S3 Bucket"
   type        = string
@@ -32,3 +37,19 @@ variable "aws_cfn_comment" {
   default     = "Personal deployment"
 }
 
+variable "dns_record_type" {
+  type    = string
+  default = "A"
+}
+
+variable "dns_record_ttl" {
+  description = "Set the TTL value number"
+  type        = string
+  default     = "300"
+}
+
+variable "domain_method" {
+  description = "Set your domain method to aplpy ACM certificate"
+  type        = string
+  default     = "DNS"
+}
