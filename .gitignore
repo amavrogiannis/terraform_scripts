@@ -3,4 +3,4 @@
 */.terraform/providers/registry.terraform.io/hashicorp/*
 */Windows/.terraform/providers/registry.terraform.io/hashicorp/*
 */Linux/.terraform/providers/registry.terraform.io/hashicorp/*
-**/.terraform/*
+*/.terraform/*
