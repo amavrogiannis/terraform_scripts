@@ -10,8 +10,8 @@ resource "aws_route53_record" "sub_domain_record" {
   type    = var.dns_record_type
   zone_id = aws_route53_zone.alexmavcouk.zone_id
   alias {
-    name = aws_cloudfront_distribution.s3_distribution.domain_name
-    zone_id = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
     evaluate_target_health = false
   }
 
@@ -29,6 +29,7 @@ resource "aws_route53_record" "cert_record" {
       type   = dvo.resource_record_type
     }
   }
+
 
   allow_overwrite = true
   name            = each.value.name
