@@ -3,7 +3,7 @@ output "cloudfront_domain_name" {
 }
 
 output "s3_bucket_name" {
-  value = aws_s3_bucket.cv_prod.id
+  value = aws_s3_bucket.bucket_name.id
 }
 
 output "ssl_cert" {

@@ -2,7 +2,7 @@ locals {
   instance_name = "${terraform.workspace}-bucket"
 }
 
-resource "aws_s3_bucket" "cv_prod" {
+resource "aws_s3_bucket" "bucket_name" {
   bucket = var.bucket_id
   tags = {
     Environment = var.bucket_env_tag
@@ -10,8 +10,8 @@ resource "aws_s3_bucket" "cv_prod" {
   }
 }
 
-resource "aws_s3_bucket_website_configuration" "cv_prod" {
-  bucket = aws_s3_bucket.cv_prod.id
+resource "aws_s3_bucket_website_configuration" "bucket_name" {
+  bucket = aws_s3_bucket.bucket_name.id
 
   index_document {
     suffix = "index.html"
@@ -23,12 +23,12 @@ resource "aws_s3_bucket_website_configuration" "cv_prod" {
 }
 
 resource "aws_s3_bucket_acl" "b_acl" {
-  bucket = aws_s3_bucket.cv_prod.id
+  bucket = aws_s3_bucket.bucket_name.id
   acl    = "private"
 }
 
-resource "aws_s3_bucket_server_side_encryption_configuration" "cv_prod" {
-  bucket = aws_s3_bucket.cv_prod.bucket
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_name" {
+  bucket = aws_s3_bucket.bucket_name.bucket
   rule {
     apply_server_side_encryption_by_default {
       sse_algorithm = "AES256"
@@ -39,7 +39,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "cv_prod" {
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.cv_prod.arn}/*"]
+    resources = ["${aws_s3_bucket.bucket_name.arn}/*"]
 
     principals {
       type        = "AWS"
@@ -48,13 +48,13 @@ data "aws_iam_policy_document" "s3_policy" {
   }
 }
 
-resource "aws_s3_bucket_policy" "cv_prod" {
-  bucket = aws_s3_bucket.cv_prod.id
+resource "aws_s3_bucket_policy" "bucket_name" {
+  bucket = aws_s3_bucket.bucket_name.id
   policy = data.aws_iam_policy_document.s3_policy.json
 }
 
-resource "aws_s3_bucket_public_access_block" "cv_prod" {
-  bucket = aws_s3_bucket.cv_prod.id
+resource "aws_s3_bucket_public_access_block" "bucket_name" {
+  bucket = aws_s3_bucket.bucket_name.id
 
   //block_public_acls       = true
   //block_public_policy     = true
