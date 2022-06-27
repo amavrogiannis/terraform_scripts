@@ -1,6 +1,13 @@
 
 */.terraform/providers/registry.terraform.io/hashicorp/aws/4.9.0/darwin_amd64/*
 */.terraform/providers/registry.terraform.io/hashicorp/*
+*/.terraform/modules/*
 */Windows/.terraform/providers/registry.terraform.io/hashicorp/*
 */Linux/.terraform/providers/registry.terraform.io/hashicorp/*
 */.terraform/*
+EKS/.terraform.tfstate.lock.info
+EKS/terraform.tfstate
+EKS/terraform.tfstate.backup
+EKS/tf-default-logs.log
+EKS/plan.txt
+EKS/.terraform.lock.hcl
