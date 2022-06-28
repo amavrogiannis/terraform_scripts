@@ -11,3 +11,5 @@ EKS/terraform.tfstate.backup
 EKS/tf-default-logs.log
 EKS/plan.txt
 EKS/.terraform.lock.hcl
+S3 & CFN/.terraform.lock.hcl
+S3 & CFN/.terraform/environment
