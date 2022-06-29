@@ -10,7 +10,7 @@ module "eks" {
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
 
-#This is a mandatory selection, which you allow EKS cluster create it's own clusters using EC2 instance. 
+  #This is a mandatory selection, which you allow EKS cluster create it's own clusters using EC2 instance. 
   self_managed_node_group_defaults = {
     instance_type                          = "${var.instance_type}"
     update_launch_template_default_version = true
@@ -24,7 +24,7 @@ module "eks" {
     instance_types = ["${var.instance_type}"]
   }
 
-#EKS allocates the vallue of having max instances "2", where "1" is desired. The instance running mode, is set to ON_DEMAND, there is also "SPOT" option too. 
+  #EKS allocates the vallue of having max instances "2", where "1" is desired. The instance running mode, is set to ON_DEMAND, there is also "SPOT" option too. 
   eks_managed_node_groups = {
     blue = {}
     green = {
