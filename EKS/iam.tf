@@ -1,12 +1,14 @@
+# Pulling current iam user data, which is running the the AWS account.
 data "aws_iam_user" "account" {
   user_name = var.iam_user
 }
 
+# Define output, which use is utilised to provision the infrastructure. 
 output "iam_user" {
   value = data.aws_iam_user.account.user_name
 }
 
-// IAM Group
+# Allocating IAM Group, where permissions and policies will be allocated.
 resource "aws_iam_group" "group" {
   name = "test-group"
   path = "/"
@@ -21,11 +23,7 @@ resource "aws_iam_group_membership" "group" {
   ]
 }
 
-# data "aws_iam_policy" "policy" {
-#   arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-# }
-
-//Role for EKS Cluster
+# Setting up the Role for EKS Cluster, followed by policy attachment, also role group attachment. 
 resource "aws_iam_role" "eks-Cluster-role" {
   assume_role_policy = jsonencode(
     {
@@ -71,7 +69,7 @@ resource "aws_iam_group_policy_attachment" "eks-cluster-group-attach" {
   policy_arn = aws_iam_role_policy_attachment.eks-cluster-attachment.policy_arn
 }
 
-//Role for nodegroup
+# Setting up the Role for Node group, followed by policy attachment, also role group attachment. 
 resource "aws_iam_role" "eks-nodegroup-NodeInstanceRole" {
   assume_role_policy = jsonencode(
     {
@@ -110,6 +108,7 @@ resource "aws_iam_group_policy_attachment" "eks-node-group-attach" {
   policy_arn = aws_iam_role_policy_attachment.eks-nodegroup-attachment.policy_arn
 }
 
+# This policy attachment will allow the node group IAM Role, to access Read only to ECR for images. 
 resource "aws_iam_role_policy_attachment" "nodes-AWS_EC2ContainerRegistryRO" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
   role       = aws_iam_role.eks-nodegroup-NodeInstanceRole.name
