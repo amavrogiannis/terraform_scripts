@@ -1,21 +1,15 @@
 # A list of files which are ignored from being published to Git repo. 
 
 #The providers path, utilize a large amount of files, which will cause problems when commiting. However, when the engineer issues "terraform init" it will then download the providers/modules from the pull public registry. 
-*/.terraform/providers/registry.terraform.io/hashicorp/aws/4.9.0/darwin_amd64/*
-*/.terraform/providers/registry.terraform.io/hashicorp/*
-*/.terraform/modules/*
-*/Windows/.terraform/providers/registry.terraform.io/hashicorp/*
-*/Linux/.terraform/providers/registry.terraform.io/hashicorp/*
 */.terraform/*
+.terraform/
 
 # terraform tfstate files show the running infrastructure and it is not best practice to save them to a public repo. 
 */.terraform.tfstate.lock.info
 */terraform.tfstate
 */terraform.tfstate.backup
+*/.terraform.lock.hcl
 
 #Other files below, are based on the various working directory and this is not relevant to be save in a github repo. 
 EKS/tf-default-logs.log
 EKS/plan.txt
-EKS/.terraform.lock.hcl
-S3 & CFN/.terraform.lock.hcl
-S3 & CFN/.terraform/environment
