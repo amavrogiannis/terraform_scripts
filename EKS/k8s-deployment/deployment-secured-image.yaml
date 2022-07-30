@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app-deployment
+  namespace: default
+  labels:
+    app: node-app-lab
+spec:
+  replicas: 1 # tells deployment to run 2 pods matching the template
+  selector:
+    matchLabels:
+      app: node-app-lab
+  template:
+    metadata:
+      labels:
+        app: node-app-lab
+    spec:
+      # Below is the stored secret, which K8s is going to use to pull image. 
+      imagePullSecrets:
+      - name: regcred
+      # The below container is pulled from private registry (jfrog)
+      containers:
+      - name: node-app
+        image: alexmdevops.jfrog.io/default-docker-local/nodeapp:52.20220615173728
+        resources:
+          limits:
+            memory: 512Mi
+            cpu: "1.5"
+          requests:
+            memory: 256Mi
+            cpu: "0.5"
+        ports:
+        - name: http
+          containerPort: 3000 # Based on the dockerfile, the node-app exposes port 3000

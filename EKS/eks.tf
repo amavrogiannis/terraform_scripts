@@ -26,8 +26,8 @@ module "eks" {
 
   #EKS allocates the vallue of having max instances "2", where "1" is desired. The instance running mode, is set to ON_DEMAND, there is also "SPOT" option too. 
   eks_managed_node_groups = {
-    blue = {}
-    green = {
+    # blue = {}
+    dev-deployment = {
       min_size     = 1
       max_size     = 2
       desired_size = 1

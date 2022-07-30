@@ -9,5 +9,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: 80 # This may change, based on the port exposed to the container. 
   type: LoadBalancer
