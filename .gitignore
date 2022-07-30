@@ -1,7 +1,7 @@
 # A list of files which are ignored from being published to Git repo. 
 
 #The providers path, utilize a large amount of files, which will cause problems when commiting. However, when the engineer issues "terraform init" it will then download the providers/modules from the pull public registry. 
-*/.terraform/*
+*/.terraform/
 .terraform/
 
 # terraform tfstate files show the running infrastructure and it is not best practice to save them to a public repo. 
