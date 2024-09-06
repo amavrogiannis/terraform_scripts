@@ -5,7 +5,9 @@ terraform {
       version = "~> 5.0"
     }
   }
-
-  required_version = ">= 1.3"
 }
 
+provider "aws" {
+  region  = "eu-west-1"
+  profile = "alexm"
+}

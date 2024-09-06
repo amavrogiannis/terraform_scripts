@@ -5,12 +5,14 @@ terraform {
       version = "~> 5.0"
     }
   }
-
-  required_version = "~> 1.3"
 }
 
+
+
 provider "aws" {
-  region = "eu-west-1"
+  region = "eu-west-2"
+  # profile = "${AWS_PROFILE}"
+  profile = "alexm2"
   default_tags {
     tags = {
       Project   = "Alex_Test"
@@ -19,3 +21,5 @@ provider "aws" {
     }
   }
 }
+
+# variable "AWS_PROFILE" {}

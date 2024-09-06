@@ -6,16 +6,16 @@ terraform {
     }
   }
 
-  required_version = "~> 1.3"
+  required_version = ">= 1.3"
 }
 
 provider "aws" {
-  region = "eu-west-1"
+  region  = "eu-west-1"
+  profile = "alexm"
   default_tags {
     tags = {
-      Project   = "Alex_Test"
-      Contact   = "alex.mavrogiannis"
-      Terraform = "TRUE"
+      Contact = "alex.mavrogiannis"
+      Project = "Personal test"
     }
   }
 }

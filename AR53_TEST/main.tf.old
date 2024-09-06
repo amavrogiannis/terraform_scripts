@@ -1,0 +1,101 @@
+# resource "aws_route53_zone" "this" {
+#   name = "this.local" 
+# }
+data "aws_route53_zone" "personal_one" {
+  name = "alexmav.co.uk"
+}
+
+resource "aws_route53_record" "this" {
+  zone_id = data.aws_route53_zone.personal_one.zone_id
+  name = "testme"
+  type = "CNAME"
+  ttl = 300
+  records = ["dnbuxrum3jpxr.cloudfront.net."]
+}
+
+variable "domain_names" {
+  type = string
+  default = "testme.alexmav.co.uk"
+}
+
+resource "aws_acm_certificate" "this" {
+  domain_name               = var.domain_names
+#   subject_alternative_names = slice(var.domain_names, 1, length(var.domain_names))
+  validation_method         = "DNS"
+}
+
+resource "aws_route53_record" "validation" {
+  count   = 1
+  name    = element(aws_acm_certificate.this.domain_validation_options.*.resource_record_name, count.index)
+  type    = element(aws_acm_certificate.this.domain_validation_options.*.resource_record_type, count.index)
+  zone_id = data.aws_route53_zone.personal_one.zone_id
+  records = [element(aws_acm_certificate.this.domain_validation_options.*.resource_record_value, count.index)]
+  ttl     = 300
+}
+
+
+resource "aws_acm_certificate_validation" "example" {
+  certificate_arn         = aws_acm_certificate.this.arn
+  validation_record_fqdns = [for record in aws_route53_record.validation : record.fqdn]
+}
+
+# ==================
+
+# variable "domain_names_this" {
+#   type = string
+#   default = "alexmav.co.uk"
+# }
+
+variable "domain_names_this" {
+  type = map(object({
+    name = string
+    sub_value = string
+    r53_record_type = string
+    r53_record_ttl = number
+    target_record = list(string)
+    ssl_domain_name = string
+  }))
+
+  default = {
+    hellome_alexmav_co_uk = {
+        name = "hellome.alexmav.co.uk"
+        sub_value = "hellome"
+        r53_record_type = "CNAME"
+        r53_record_ttl = 300
+        target_record = ["dnbuxrum3jpxr.cloudfront.net."]
+        ssl_domain_name = "hellome.alexmav.co.uk"
+    }
+  }
+}
+
+resource "aws_route53_record" "this1" {
+  for_each = var.domain_names_this
+  zone_id = data.aws_route53_zone.personal_one.zone_id
+
+  name = each.key
+  type = each.value.r53_record_type
+  ttl = each.value.r53_record_ttl
+  records = each.value.target_record
+}
+
+variable "ssl_domain_selected" {
+  type = list(string)
+  default = [ "hellome.alexmav.co.uk" ]
+}
+
+resource "aws_acm_certificate" "this1" {
+  for_each = var.domain_names_this
+
+  domain_name               = each.value.ssl_domain_name
+  validation_method         = "DNS"
+}
+resource "aws_route53_record" "validation1" {
+    for_each = var.domain_names_this
+#   count = length(var.ssl_domain_selected)
+  zone_id = data.aws_route53_zone.personal_one.zone_id
+  name    = each.key
+  type    = "CNAME"
+  ttl     = 300
+  records = [aws_acm_certificate.this1[each.key].domain_validation_options[0].resource_record_name]
+}
+
